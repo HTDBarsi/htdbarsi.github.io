@@ -1,58 +1,68 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI calculator</title>
+    <style>
+        body{
+            background-color: rgb(15,15,15);
+            color: white;
+            font-family: 'Courier New', Courier, monospace;
+            text-align: center;
+            padding: 20px;
+        }
+        input{
+            margin: 10px;
+            padding: 0 20px 0 20px;
+        }
+    </style>
+    <script>
+        var data = [0,0,0];
+        var names = ["kgs","cms","bmi"];
+        /*
+            bmi = weight/(height**2)
+            w = bmi*(height**2)
+            h = math.sqrt(weight/bmi)
+        */
+        fns = [
+        function kgs(){
+            return data[2]*((data[1]/100)**2)
+        },
+        function cms(){
+            return Math.sqrt(data[0]/data[2])*100
+        },
+        function bmi(){
+            return data[0]/((data[1]/100)**2)
+        }
+        ]
+        function changed(c){
+            var val = document.getElementById(names[c]).value || 0;
+            data[c] = val;
+            if (val == 0) return null;
+            var counter = 0;
+            var current = 0;
+            for (var i = 0; i < data.length; i++){
+                if (data[i] == 0){
+                    counter++;
+                    current = i;
+                }
+            }
+            if (counter != 1) return null 
+            var result = fns[current]() || 0
+            document.getElementById(names[current]).value = Math.round(result*100)/100
+            data[current] = result
+        }
+    </script>
+</head>
 <body>
-<p>Feature list:
-
-
-Type soul :
---Mobfarm :
--Select position (ability to farm under and above the mob aswell as underground)
--Custom tween speed
---Ability to farm any mob in the game
-
---Autoquest:
--Quicny and soulreaper support
--Adjustment of the position
--Selection of the missionboard you want to choose quests from
-
---Teleports:
--Tween to any npc
-
---Misc:
--Streamer mode(hides your username in party tab client sided)
--Destroy killbricks(destroys killbricks)
--Chatlogger
--Instant respawn(forces you to instantly respawn)
-
-
---Visuals:
--ESP
--Boxes
--Nametags
--Custom color picker
-
-Aut:
-Bossfarm:
---Adjustable position
---Pick any boss
-
---Mobfarm:
---Adjustable position for thugs
---Lvl indicator for thugs
-
---Autosakuya quest:
---Ability to automatically farm and get sakuya quest
-
-Misc:
---Autostore items
---Sand debris farm
---Chest farm
---Chat logger
-
-Visuals:
---ESP
---Nametags
---Boxes
-</p>
+    <form>
+        <label for="kgs">Weight in kg:</label><br>
+        <input type="number" id="kgs" onchange="changed(0)"><br>
+        <label for="cms">Height in cm:</label><br>
+        <input type="number" id="cms" onchange="changed(1)"><br>
+        <label for="bmi">BMI:</label><br>
+        <input type="number" id="bmi" onchange="changed(2)">
+    </form>
 </body>
 </html>
